@@ -1,0 +1,86 @@
+services:
+
+  Boldy\SyliusExportPlugin\Form\Type\ExportType:
+    arguments:
+      - "@service_container"
+    tags: ["form.type"]
+
+  boldy.exporters_registry:
+    class: Boldy\SyliusExportPlugin\Registry\ExporterRegistry
+    arguments:
+      - Boldy\SyliusExportPlugin\Gabarit\GabaritInterface
+      - exporter
+
+  boldy.controller.export:
+    public: true
+    class:  Boldy\SyliusExportPlugin\Controller\ExportDataController
+    arguments:
+      - "@boldy.exporters_registry"
+
+  boldy.orders.gabarit:
+    class: Boldy\SyliusExportPlugin\Gabarit\OrderGabarit
+    arguments:
+      - "@sylius.repository.order"
+    tags:
+      - { name: boldy.gabarit, format: csv, exporter: boldy.exporters.order.csv }
+      - { name: boldy.gabarit, format: xls, exporter: boldy.exporters.order.xls }
+
+  boldy.orders.show_gabarit:
+    class: Boldy\SyliusExportPlugin\Gabarit\OrderGabaritShow
+    arguments:
+      - "@sylius.repository.order"
+    tags:
+      - { name: boldy.gabarit, format: csv, exporter: boldy.exporters.order.csv }
+      - { name: boldy.gabarit, format: xls, exporter: boldy.exporters.order.xls }
+
+  boldy.products.gabarit:
+    class: Boldy\SyliusExportPlugin\Gabarit\ProductGabarit
+    arguments:
+      - "@sylius.repository.product"
+    tags:
+      - { name: boldy.gabarit, format: csv, exporter: boldy.exporters.order.csv }
+      - { name: boldy.gabarit, format: xls, exporter: boldy.exporters.order.xls }
+
+  boldy.exporters.order.csv:
+    class: Boldy\SyliusExportPlugin\Exporter\OrderExporter
+    arguments:
+      - "@boldy.exporter.csv_writer"
+      - "@boldy.pluginpool.order"
+      - '@?'
+
+  boldy.exporters.order.xls:
+    class: Boldy\SyliusExportPlugin\Exporter\OrderExporter
+    arguments:
+      - "@boldy.exporter.xls_writer"
+      - "@boldy.pluginpool.order"
+      - '@?'
+
+  boldy.pluginpool.order:
+    class: Boldy\SyliusExportPlugin\PluginPool\PluginPool
+    arguments:
+      - ["@boldy.plugin.order"]
+
+  boldy.plugin.order:
+    class: Boldy\SyliusExportPlugin\Plugin\OrderPlugin
+    arguments:
+      - "@sylius.repository.order"
+      - "@property_accessor"
+      - "@doctrine.orm.entity_manager"
+
+  boldy.exporter.xls_writer:
+    class: Boldy\SyliusExportPlugin\Writer\SpreadsheetWriter
+    arguments:
+      - "@boldy.exporter.speadsheet_writer_factory"
+
+  boldy.exporter.csv_writer:
+    class: Boldy\SyliusExportPlugin\Writer\CsvWriter
+    arguments:
+      - "@port.csv_writer"
+
+  port.csv_writer:
+    class: Port\Csv\CsvWriter
+    arguments:
+      - ","
+
+  boldy.exporter.speadsheet_writer_factory:
+    class: Boldy\SyliusExportPlugin\Writer\PortSpreadsheetWriterFactory

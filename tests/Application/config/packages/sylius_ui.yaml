@@ -1,0 +1,8 @@
+sylius_ui:
+  events:
+    sylius.admin.dashboard.content:
+      blocks:
+        after_statistics_legacy: '@BoldySyliusExportPlugin/block.html.twig'
+    sylius.admin.layout.javascripts:
+      blocks:
+        legacy: '@BoldySyliusExportPlugin/_javascript.html.twig'

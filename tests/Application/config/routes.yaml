@@ -1,0 +1,3 @@
+boldy_sylius_export:
+    resource: "@BoldySyliusExportPlugin/Resources/config/routing.yaml"
+    prefix: /admin

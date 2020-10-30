@@ -1,0 +1,27 @@
+<div class="ui modal" id="export-modal">
+  <div class="header">{{ 'boldy.export'|trans }}</div>
+  <div class="content">
+    <div class="ui segment">
+      {{ form_start(form, {'attr': {'class': 'ui form', 'action': path('boldy_sylius_export_admin_dashboard_export')}}) }}
+        {{ form_errors(form) }}
+        <div class="two fields">
+            <div class="field">
+                {{ form_row(form.export_type) }}
+            </div>
+            <div class="field">
+                {{ form_row(form.export_format) }}
+            </div>
+        </div>
+         <div class="two fields">
+            <div class="field">
+                {{ form_row(form.date_start) }}
+            </div>
+            <div class="field">
+                {{ form_row(form.date_end) }}
+            </div>
+        </div>
+        <input type="submit" class="ui primary button" value="{{ 'boldy.export'|trans }}">
+      {{ form_end(form) }}
+    </div>
+  </div>
+</div>

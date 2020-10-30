@@ -1,0 +1,5 @@
+boldy_sylius_export_admin_dashboard_export:
+  path: /export
+  methods: POST
+  defaults:
+    _controller: boldy.controller.export:export
